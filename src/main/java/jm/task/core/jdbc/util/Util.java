@@ -1,5 +1,9 @@
 package jm.task.core.jdbc.util;
 
+import jm.task.core.jdbc.model.User;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -12,11 +16,18 @@ public class Util {
     private static final String DB_PASSWORD = "1234";
 
 
+    public static SessionFactory getSessionFactory() {
+        Configuration cfg = new Configuration().addAnnotatedClass(User.class);
+        return cfg.buildSessionFactory();
+    }
+
+
     public static Connection getConnection() {
         Connection conn = null;
-        try  {
+
+        try {
             Class.forName(DB_Driver);
-            conn = DriverManager.getConnection(DB_URL,DB_USER,DB_PASSWORD);
+            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
             System.out.println("Connected to database");
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Failed to connect to database");
